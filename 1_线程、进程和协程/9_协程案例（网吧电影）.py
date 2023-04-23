@@ -21,27 +21,6 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
 }
 
-def get_videos_url(video_name, m3u8_url: str):
-    res = requests.get(m3u8_url, headers=headers)
-    # 保存m3u8文件
-    m3u8_filename = m3u8_url.split(r'/')[-1]
-    with open(os.path.join(video_name, m3u8_filename), 'w', encoding='GBK') as f:
-        f.write(res.text)
-    all_videos_url = []
-    for i in res.text.strip().split('\n'):
-        # 判断视频是否加密，如果加密则将秘钥存储下来文件名为：enc.key，如果未加密则不存储任何文件
-        if 'AES' in i and 'KEY' in i:
-            key_uri = re.findall('URI="(.*?)"', i)[0]
-            if "http" not in key_uri:
-                key_uri = r'/'.join(m3u8_url.split(r'/')[:-1]) + '/' + key_uri
-            key = requests.get(key_uri, headers=headers).content
-            with open(os.path.join(video_name, 'enc.key'), 'wb') as f:
-                f.write(key)
-        if i.startswith('#') or len(i) == 0:
-            continue
-        all_videos_url.append(i)
-    return all_videos_url
-
 def get_m3u8_url(url: str):
     """
     这里m3u8地址有多种情况
@@ -65,6 +44,7 @@ def get_m3u8_url(url: str):
         m3u8_url = iframe_url.rsplit('/', maxsplit=2)[0] + re.findall('"url":"(.*?)"', iframe_res.text, re.S)[0]
     else:
         m3u8_url = m3u8_url[0]
+    # print(m3u8_url)
     return m3u8_url, video_name
 
 
@@ -72,13 +52,37 @@ def makedir_video(video_name: str):
     if not os.path.exists(video_name):
         os.mkdir(video_name)
 
+
+def get_videos_url(video_name, m3u8_url: str):
+    res = requests.get(m3u8_url, headers=headers)
+    # 保存m3u8文件
+    m3u8_filename = m3u8_url.split(r'/')[-1]
+    with open(os.path.join(video_name, m3u8_filename), 'w', encoding='GBK') as f:
+        f.write(res.text)
+    all_videos_url = []
+    for i in res.text.strip().split('\n'):
+        # 判断视频是否加密，如果加密则将秘钥存储下来文件名为：enc.key，如果未加密则不存储任何文件
+        if 'AES' in i and 'KEY' in i:
+            key_uri = re.findall('URI="(.*?)"', i)[0]
+            if "http" not in key_uri:
+                key_uri = r'/'.join(m3u8_url.split(r'/')[:-1]) + '/' + key_uri
+            key = requests.get(key_uri, headers=headers).content
+            with open(os.path.join(video_name, 'enc.key'), 'wb') as f:
+                f.write(key)
+        if i.startswith('#') or len(i) == 0:
+            continue
+        all_videos_url.append(i)
+        # print(all_videos_url)
+    return all_videos_url
+
+
 async def download_video(filepath, video_url, sem):
     async with sem:  # 使用信号量控制访问频率
         for i in range(10):
             try:
                 video_name = video_url.split(r'/')[-1]
                 async with aiohttp.ClientSession() as session:
-                    async with session.get(video_url, headers=headers) as res:
+                    async with session.get(video_url, headers=headers, timeout=10) as res:
                         content = await res.content.read()
                         async with aiofiles.open(os.path.join(filepath, video_name), 'wb') as f:
                             await f.write(content)
@@ -133,8 +137,8 @@ async def parse_all_videos(video_name):
 def merge(video_name):
     new_video_name = video_name + '_parse'
     # 读取m3u8文件，获取文件正确顺序
-    m3u8_file = [i for i in os.listdir(new_video_name) if i.endswith('m3u8')][0]
-    with open(os.path.join(new_video_name, m3u8_file)) as f:
+    m3u8_file = [i for i in os.listdir(video_name) if i.endswith('m3u8')][0]
+    with open(os.path.join(video_name, m3u8_file)) as f:
         video_sort = [i.split('/')[-1].strip() for i in f.readlines() if not i.startswith("#") and len(i) > 0]
     n = 1
     # 切换工作目录
@@ -162,22 +166,22 @@ def merge(video_name):
     os.system(cmd)
 
 if __name__ == '__main__':
-    url = 'https://www.66s.cc/e/DownSys/play/?classid=2&id=20862&pathid1=0&bf=0'  # 66v电影网视频地址
+    url = 'https://www.66s.cc/e/DownSys/play/?classid=4&id=20778&pathid1=0&bf=0'  # 66v电影网视频地址
     # 获取m3u8地址和电影名称
     # get_m3u8_url(url)
     m3u8_url, video_name = get_m3u8_url(url)
-    # # # 创建电影名称文件夹
+    # 创建电影名称文件夹
     makedir_video(video_name)
-    # # # 根据m3u8地址，获取所有的视频地址，并判断是否加密
+    # 根据m3u8地址，获取所有的视频地址，并判断是否加密
     all_videos = get_videos_url(video_name, m3u8_url)
-    # # # 根据视频地址下载视频
+    # 根据视频地址下载视频
     sem_num = 1000  # 用于控制并发量
     event_loop = asyncio.get_event_loop()
     event_loop.run_until_complete(download_all_videos(sem_num, video_name, all_videos))
-    # # # 解密所有视频
+    # 解密所有视频
     event_loop = asyncio.get_event_loop()
     event_loop.run_until_complete(parse_all_videos(video_name))
-    # # 合并视频
-    # # windows 自带合成命令: copy /b a.ts+b.ts full.mp4
-    # # linux/mac 命令: cat a.ts b.ts c.ts > xxx.mp4
+    # 合并视频
+    # windows 自带合成命令: copy /b a.ts+b.ts full.mp4
+    # linux/mac 命令: cat a.ts b.ts c.ts > xxx.mp4
     merge(video_name)

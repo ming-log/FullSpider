@@ -5,7 +5,7 @@ import aiofiles
 
 async def download(url):
     try:
-        name = url.split("/")[-1]
+        name = url.split("/")[-1].split('@')[0]
         # 创建session对象 -> 相当于requsts对象
         async with aiohttp.ClientSession() as session:
             # 发送请求, 这里和requests.get()几乎没区别, 除了代理换成了proxy
@@ -24,8 +24,8 @@ async def download(url):
 
 async def main():
     url_list = [
-        "https://www.xiurenji.vip/uploadfile/202110/20/1F214426892.jpg",
-        "https://www.xiurenji.vip/uploadfile/202110/20/91214426753.jpg"
+        "https://cdn-usa.skypixel.com/uploads/usa_files/storynode/image/214c3e7a-767d-41b3-9dcc-c43df9b2e5fd.jpg@!1200",
+        "https://cdn-usa.skypixel.com/uploads/usa_files/storynode/image/4b32f894-a8e0-4d92-9dc7-f9c5b932723f.JPG@!1200"
     ]
     tasks = []
 

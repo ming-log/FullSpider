@@ -99,4 +99,5 @@ if __name__ == '__main__':
     with ThreadPoolExecutor(16) as t:  # 设置最大16线程
         for i in range(8):  # 开启8线程
             t.submit(work, q, cursor, lock)
+    cursor.close()
     conn.close()
