@@ -24,6 +24,7 @@ function get_fmt_datetime() {
     let fmt_time = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second
     console.log(fmt_time)
 }
+
 // setInterval(get_fmt_datetime, 1000)
 
 // 时间戳

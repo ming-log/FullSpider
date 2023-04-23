@@ -11,6 +11,7 @@ from queue import Queue
 from lxml import etree
 import pandas as pd
 
+
 def work(q: Queue, cursor, lock):
     """
     获取并解析数据
@@ -77,12 +78,10 @@ def set_work():
     q = Queue()
     for year in range(1994, 2024):
         q.put(year)
-    print('*'*20)
+    print('*' * 20)
     print(f"成功添加{q.qsize()}个任务")
-    print('*'*20)
+    print('*' * 20)
     return q
-
-
 
 
 if __name__ == '__main__':

@@ -50,6 +50,7 @@ async def download_one(name, href):
 
     print(title)
 
+
 # 方案一
 async def download_chapter(chapter):
     chapter_name = '../download_files/' + chapter['chapter_name']

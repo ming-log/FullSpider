@@ -21,6 +21,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
 }
 
+
 def get_m3u8_url(url: str):
     """
     这里m3u8地址有多种情况
@@ -89,12 +90,14 @@ async def download_video(filepath, video_url, sem):
                 break
             except Exception as e:
                 if i == 9:
-                    with open(filepath+'_Error.txt', 'a', encoding='utf-8') as f:
-                        f.write(video_url+'\n')
-                        print(f'----- {video_name}下载失败，请求次数达到上限（{i+1}次），已写入文件{filepath+"_Error.txt"} -----')
+                    with open(filepath + '_Error.txt', 'a', encoding='utf-8') as f:
+                        f.write(video_url + '\n')
+                        print(
+                            f'----- {video_name}下载失败，请求次数达到上限（{i + 1}次），已写入文件{filepath + "_Error.txt"} -----')
                     break
                 print(f'----- {video_name}下载失败，正在重试{i} -----')
                 print(e)
+
 
 async def download_all_videos(sem_num, filepath, all_videos_url):
     # 信号量, 用来控制协程的并发量
@@ -104,15 +107,18 @@ async def download_all_videos(sem_num, filepath, all_videos_url):
         tasks.append(asyncio.create_task(download_video(filepath, video_url, sem)))
     await asyncio.wait(tasks)
 
+
 async def parse_video(video_file, video_name, new_video_name, key):
     print(os.path.join(video_name, video_file))
     print(os.path.join(new_video_name, video_file))
-    async with aiofiles.open(os.path.join(video_name, video_file), 'rb') as f1, aiofiles.open(os.path.join(new_video_name, video_file), 'wb') as f2:
+    async with aiofiles.open(os.path.join(video_name, video_file), 'rb') as f1, aiofiles.open(
+            os.path.join(new_video_name, video_file), 'wb') as f2:
         content = await f1.read()
         aes = AES.new(key=key, mode=AES.MODE_CBC, IV=b'0000000000000000')
         new_content = aes.decrypt(content)
         await f2.write(new_content)
         print(f'------ {video_file}解密成功 ------')
+
 
 async def parse_all_videos(video_name):
     all_file = os.listdir(video_name)
@@ -133,6 +139,7 @@ async def parse_all_videos(video_name):
     else:
         os.rename(video_name, new_video_name)
         print('------ 视频无加密 ------')
+
 
 def merge(video_name):
     new_video_name = video_name + '_parse'
@@ -164,6 +171,7 @@ def merge(video_name):
     # 最后一次合并
     cmd = f"copy /b {'+'.join(last_temp)} {video_name}.mp4"
     os.system(cmd)
+
 
 if __name__ == '__main__':
     url = 'https://www.66s.cc/e/DownSys/play/?classid=4&id=20778&pathid1=0&bf=0'  # 66v电影网视频地址

@@ -1,5 +1,5 @@
 console.log('-------------------------')
-let fn = function (){
+let fn = function () {
     console.log('hello world!');
 }
 fn();
@@ -29,12 +29,13 @@ h1n(123);
 // 传入多个参数，参数外的括号不可省略
 console.log('-------------------------')
 let h2n = (a, b) => {
-    console.log(a+b);
+    console.log(a + b);
 }
 h2n(123, 1);
 
 console.log('-------------------------')
-function f1(m, n){
+
+function f1(m, n) {
     n(m);
 }
 

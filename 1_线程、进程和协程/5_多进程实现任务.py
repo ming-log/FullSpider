@@ -1,12 +1,14 @@
 import os.path
-from multiprocessing import Process,Queue
+from multiprocessing import Process, Queue
 from concurrent.futures import ThreadPoolExecutor
 from lxml import etree
 
 import requests
+
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"
 }
+
 
 def get_img_src(q):
     """
@@ -35,6 +37,7 @@ def download_img(q):
                 break
             t.submit(donwload_one, s)
 
+
 def donwload_one(s):
     # 单纯的下载功能
     resp = requests.get(s, headers=headers)
@@ -47,6 +50,7 @@ def donwload_one(s):
         f.write(resp.content)
     print("一张图片下载完毕", file_name)
     resp.close()
+
 
 if __name__ == '__main__':
     q = Queue()  # 两个进程必须使用同一个队列. 否则数据传输不了

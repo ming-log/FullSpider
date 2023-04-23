@@ -1,18 +1,18 @@
-function Persion(name, age){
+function Persion(name, age) {
     // 给对象赋予一个初始化的值
     // this表示当前对象，类似于Python中的self
     this.name = name
     this.age = age
 
     // 给对象设置方法
-    this.eat = function (food){
+    this.eat = function (food) {
         console.log(this.name + this.age + '岁，正在吃' + food + '！')
     }
 }
 
 // 给Person的对象，增加一个新的功能，但是无法覆写属性和方法
 // 例如给Persion对象增加一个睡觉功能
-Persion.prototype.sleep = function (){
+Persion.prototype.sleep = function () {
     console.log(this.name + '正在睡觉!')
 }
 

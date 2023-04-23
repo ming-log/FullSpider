@@ -21,9 +21,9 @@ var name, age, sex
 name = 'luoming3'
 age = 18
 sex = '男'
-console.log('姓名:' + name, "\n年龄:" + age, "\n性别:"+sex)
+console.log('姓名:' + name, "\n年龄:" + age, "\n性别:" + sex)
 
 console.log('---------------------------')
 // JS中无解包操作
 var name1, age1, sex1 = '男'  // 默认情况下只会对最后一个变量进行赋值
-console.log('姓名:' + name1, "\n年龄:" + age1, "\n性别:"+sex1)
+console.log('姓名:' + name1, "\n年龄:" + age1, "\n性别:" + sex1)

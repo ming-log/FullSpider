@@ -1,7 +1,8 @@
 // JS中所有的函数名字（对象）都有call和apply
 
-window=global;
-function play_with(name){
+window = global;
+
+function play_with(name) {
     // 在函数中this默认指的是window
     console.log(this.name + "在和" + name + '玩耍!')
 }
@@ -11,16 +12,15 @@ play_with('李四')  // 张三在和李四玩耍!
 console.log('-------------------------')
 
 
-
 //  call
-function Persion(name, age){
+function Persion(name, age) {
     // 给对象赋予一个初始化的值
     // this表示当前对象，类似于Python中的self
     this.name = name
     this.age = age
 
     // 给对象设置方法
-    this.eat = function (food){
+    this.eat = function (food) {
         console.log(this.name + this.age + '岁，正在吃' + food + '！')
     }
 }

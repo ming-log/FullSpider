@@ -1,6 +1,7 @@
 import time
 import asyncio
 
+
 # await: 当该任务被挂起后, CPU会自动切换到其他任务中
 async def func1():
     print("func1, start")
@@ -29,6 +30,7 @@ async def run():
     ]
     await asyncio.wait(tasks)  # 等待所有任务执行结束
     print(time.time() - start)
+
 
 if __name__ == '__main__':
     asyncio.run(run())

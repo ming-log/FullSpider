@@ -1,5 +1,5 @@
 // ****** 变量提升
-function fn(){
+function fn() {
     // var name;
     // 站在开发人员角度分析，是不合理的
     console.log(name)  // 会提前声明变量,这种现象叫做变量提升
@@ -7,13 +7,15 @@ function fn(){
     // 新版本的js修复了 es6
     // 使用 let声明变量就不会出现变量提升
 }
+
 fn()  // undefined
 
 
-function fn2(){
+function fn2() {
     console.log(name)
     let name = '123'
 }
+
 // fn2()  // 这个时候就会报错
 
 // ****** 常量定义

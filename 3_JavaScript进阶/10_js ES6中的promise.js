@@ -3,16 +3,16 @@
 // 发送请求的函数
 // 无法确定这个请求什么时候回来
 // 异步的
-function send(url){   // 发送请求的函数
-    let p = new Promise(function (resolve, reject){  // promise在创建的时候，自动运行这个function
+function send(url) {   // 发送请求的函数
+    let p = new Promise(function (resolve, reject) {  // promise在创建的时候，自动运行这个function
         console.log("发送一个请求" + url);  // 模拟
-        setTimeout(function (){
+        setTimeout(function () {
             let data = '从' + url + '返回的数据';
             let status = 200;
             // 处理数据
-            if (status === 200){
+            if (status === 200) {
                 resolve(data)  // 本次请求没有问题
-            }else{
+            } else {
                 reject(data)  // 本次请求有问题
             }
         }, 1000)
@@ -53,7 +53,7 @@ send('login.html').then(data => {  // 如果请求没问题，接下来要运行
     return data
 }).then(data => {
     console.log(data)
-}).catch(function (data){
+}).catch(function (data) {
     console.log('请求失败，请刷新后重试，还是有问题请联系管理员！')  // 如果请求有问题，接下来要运行的逻辑写在catch中
 })
 

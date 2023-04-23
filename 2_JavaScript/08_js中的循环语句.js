@@ -1,15 +1,15 @@
 // while 循环
 var a = 0
-while(a < 10){
+while (a < 10) {
     if (a == 5) break
     console.log(a++);
 }
 console.log('------------------------')
 // do ... while ... 循环，相比于while无论条件是否成立都会执行一次
 a = 0
-do{
+do {
     console.log(a)
-}while(a++ < 10)
+} while (a++ < 10)
 
 console.log('------------------------')
 // for ... 循环

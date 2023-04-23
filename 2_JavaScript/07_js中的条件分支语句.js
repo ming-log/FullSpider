@@ -2,9 +2,9 @@ var a = 10
 
 // if 语句
 // 通过大括号界定代码块的范围
-if (a > 50){
+if (a > 50) {
     console.log(123)
-}else{
+} else {
     console.log(456)
 }
 
@@ -18,7 +18,7 @@ else
 
 // switch语句
 a = 3
-switch (a){
+switch (a) {
     case 1:
         console.log('我是1')
     case 2:
@@ -42,7 +42,7 @@ switch (a){
 console.log('---------');
 // 如果不需要switch穿透则在每个case后面都要加上break语句，打断后续的case
 a = 3
-switch (a){
+switch (a) {
     case 1:
         console.log('我是1')
         break
@@ -66,7 +66,7 @@ switch (a){
 console.log('---------');
 // switch穿透是有用的，例如：通过月份判断季度
 var month = 5
-switch (month){
+switch (month) {
     case 1:
     case 2:
     case 3:
