@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.min.js"></script>
+    <script>
+        // window.onload = function (){ // 在加载完后自动运行
+        //
+        // };
+        $(function (){  //  与上方使用等价，也是加载完成后自动运行
+            // // 找到页面元素
+            // let btn = document.getElementById('btn')
+            // // 绑定事件
+            // btn.addEventListener('click', function (){
+            //     console.log('hello world!')
+            // })
+
+            // 上方操作使用jquery进行简化为如下
+            // let btn = $("#btn")  // 找到页面元素
+            // let input = $("#uname")
+            // btn.click(function (){  // 使用jquery的选择器可以直接选择到页面结构
+            //     console.log('jquery')
+            // })
+
+            let btn = $("#btn");  // 找到页面元素
+            // 上方操作使用jquery进行简化为如下
+            btn.click(function (){  // 使用jquery的选择器可以直接选择到页面结构
+                let name = $("#uname");
+                if (name.val() === '刘德华'){  // .val()中没有参数就是取文本框中的值
+                    name.val('张学友');
+                } else {
+                    name.val('刘德华');  // 所有的value相关的操作全部更换成了.val()
+                }
+
+                // 还可以获取其他属性的值
+                let sth = name.attr("name")
+                console.log(sth)
+                // 修改某个属性的值
+                name.attr("name", "真的是一个输入框！！！！！！")  // 将输入框"name"属性变为"真的是一个输入框！！！！！！"
+
+                // jquery这种现象狠多
+                if ($("h1").length > 0){
+                    $("div").html('')  // 往里面丢东西
+                } else {
+                    $("div").html('<h1>今天是一个好日子！</h1>')
+                    // $("div").text('<h1>今天是一个好日子！</h1>')  // 这个是传文本
+                }
+                console.log($("div").html())  // 去html
+            });
+
+            // jquery中的遍历
+            $("ul > li").each(function (i, el){
+                console.log(i)
+                // console.log(el)  // 注意此时拿到的是一个dom对象，并不是一个jquery对象
+                // 将dom对象修改为jquery对象
+                console.log($(el).text());
+                console.log($(this).text());  // 此时这里的el和this等价
+            })
+        })
+    </script>
+</head>
+<body>
+    <input type="button" value="你点我一下试试" id="btn">
+    <input type="text" name="我是输入框" id="uname" value="刘德华">
+    <div style="background: pink; width: 1000px; height: 1000px;margin: 0; margin-left: 25%">
+        <h1>今天是一个好日子！</h1>
+    </div>
+    <ul>
+        <li>西红柿</li>
+        <li>西瓜</li>
+        <li>火龙果</li>
+        <li>香蕉</li>
+    </ul>
+</body>
+</html>
