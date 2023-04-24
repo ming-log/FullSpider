@@ -1,0 +1,72 @@
+<!--所有的事件-->
+<!--onclick		点击事件-->
+<!--onfocus		获取焦点-->
+<!--onblur		失去焦点-->
+<!--onsubmit		提交表单-->
+<!--onchange		更换选项-->
+<!--onscroll		滚动条滚动-->
+<!--onmouseover	鼠标滑过-->
+<!--onmouseout	鼠标滑出-->
+<!--onmousemove	鼠标滑动-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+    script的放置位置对页面加载是有影响的
+    程序默认是从上至下运行代码的，如果把这串代码放上面，那么这个JS会在页面中的按钮没生成时就运行
+    所以在控制台中打印出的就是null
+    -->
+    <script>
+        let btn = window.document.querySelector("#btn")
+        console.log('上面JS：')
+        console.log(btn)
+        // 也可以使用onload，表示当页面加载完html的时候，自动执行
+        window.onload = function (){
+            btn = window.document.querySelector("#btn")
+            console.log('上面JS：')
+            console.log(btn)
+            // 使用onclick添加点击事件
+            // btn.onclick = function (){
+            //     alert('你别点我！')
+            // }
+            // 最正宗的添加事件绑定的方案
+            // btn.addEventListener(
+            //     'click', function (){
+            //         alert('你别点我啊！')
+            //     }
+            // )
+        }
+        window.onload = function (){
+            let btn2 = window.document.querySelector("#btn")
+            btn2.onclick = function (){
+                // 先拿到input
+                let input = document.querySelector("#uname")
+                if (input.value === '周杰伦'){
+                    input.value = '卡布达'
+                } else {
+                    input.value = '周杰伦'
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <input type="button" value="点我" id="btn">
+    <input type="text" name="" id="uname" value="周杰伦">
+</body>
+    <!--
+    放下面则不一样，页面中的按钮会先加载出来，
+    这个时候再通过标签选择器去选择，就可以得到标签内容
+    所以在编写爬虫的时候，根据业务逻辑的不同，
+    Script代码可能在<body></>body>上方也可能在<body></>body>下方
+    -->
+    <script>
+        btn = window.document.querySelector("#btn")
+        console.log('下面JS：')
+        console.log(btn)
+    </script>
+</html>

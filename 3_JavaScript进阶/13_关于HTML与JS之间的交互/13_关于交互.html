@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script>
+        function fn(){
+            if (10 > 90){
+                // 页面跳转
+                window.location.href = "http://www.baidu.com"
+            } else{
+                alert("请先登录！")
+            }
+        }
+    </script>
+</head>
+<body>
+    <!--
+    input type="button" 是全世界最单纯的按钮
+    onclick,再点击时，自动出发
+    通过事件进行绑定，可以让HTML和JS进行交互
+    -->
+    <input type="button" value="百度" onclick="fn()">  <!-- 绑定fn函数 -->
+
+    <!--javascript: 要运行js代码，void(0); 啥也不干
+    通过事件进行绑定，可以实现比普通a标签更为复杂的功能 -->
+    <a href="javascript: void(0);" onclick="fn()">我要去百度</a>
+</body>
+</html>
