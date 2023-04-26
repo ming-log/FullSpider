@@ -5,7 +5,7 @@ from hashlib import md5  # 导入md5
 obj = md5()
 
 # 准备你要计算的东西
-name = '骆明'.encode('utf-8')  # 要使用字节,将UTF-8数据转化为字节
+name = 'client=fanyideskweb&mysticTime=1682515721805&product=webfanyi&key=fsdsogkndfokasodnaso'.encode('utf-8')  # 要使用字节,将UTF-8数据转化为字节
 
 # 把数据丢给obj
 obj.update(name)
