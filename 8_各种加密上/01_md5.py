@@ -39,3 +39,8 @@ val = obj.hexdigest()
 print(val)  # da205965e558f80b4a5157c493d6623a
 # 这个时候就无法破解
 # 要确定网页上是否撒盐了，可以生成一个md5码和未撒盐的进行对比。
+# 部分网站会生成16进制格式
+print(obj.digest())  # b'\xda Ye\xe5X\xf8\x0bJQW\xc4\x93\xd6b:'
+
+# 除了md5，还有一些其他的哈希算法sha1, sha224, sha256, sha3_384等等
+# from hashlib import sha1, sha224, sha256, sha3_384
