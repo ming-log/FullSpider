@@ -48,15 +48,15 @@ result = response.text
 key_obj = md5()
 key = 'ydsecret://query/key/B*RGygVywfNBwpmBaZg*WT7SIOUP2T0C9WHMZN39j^DAdaZhAnxvGcCY6VYFwnHl'
 key_obj.update(key.encode('utf-8'))
-md5_key = bytearray(key_obj.digest())
+md5_key = key_obj.digest()
 
 iv_obj = md5()
 iv = 'ydsecret://query/iv/C@lZe2YzHtZ2CYgaXKSVfsb7Y4QWHjITPPZ0nQp87fBeJ!Iv6v^6fvi2WN@bYpJ4'
 iv_obj.update(iv.encode('utf-8'))
-iv_key = bytearray(iv_obj.digest())
+iv_key = iv_obj.digest()
 
-base64_result = bytearray(base64.b64decode(result))
-pad_result = Padding.pad(base64_result, 128)
+base64_result = base64.b64decode(result)
+pad_result = Padding.pad(base64_result, 16)
 
 aes = AES.new(key=md5_key, mode=AES.MODE_CBC, IV=iv_key)
 aes_result = aes.decrypt(pad_result)
