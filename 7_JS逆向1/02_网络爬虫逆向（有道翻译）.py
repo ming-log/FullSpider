@@ -22,7 +22,7 @@ headers = {
     'Referer': 'https://fanyi.youdao.com/'
 }
 
-word = '今天星期几？'
+word = '今天的天气真好！'
 
 data = {
     'i': word,
@@ -42,40 +42,32 @@ data = {
 }
 
 response = requests.post(trans_api, headers=headers, data=data)
-print(response.text)
-result = response.content
+# print(response.text)
+result = response.text
 
 key_obj = md5()
 key = 'ydsecret://query/key/B*RGygVywfNBwpmBaZg*WT7SIOUP2T0C9WHMZN39j^DAdaZhAnxvGcCY6VYFwnHl'
 key_obj.update(key.encode('utf-8'))
-md5_key = key_obj.digest()
+md5_key = bytearray(key_obj.digest())
 
 iv_obj = md5()
 iv = 'ydsecret://query/iv/C@lZe2YzHtZ2CYgaXKSVfsb7Y4QWHjITPPZ0nQp87fBeJ!Iv6v^6fvi2WN@bYpJ4'
 iv_obj.update(iv.encode('utf-8'))
-iv_key = iv_obj.digest()
+iv_key = bytearray(iv_obj.digest())
+
+base64_result = bytearray(base64.b64decode(result))
+pad_result = Padding.pad(base64_result, 128)
 
 aes = AES.new(key=md5_key, mode=AES.MODE_CBC, IV=iv_key)
+aes_result = aes.decrypt(pad_result)
+print(aes_result)
 
-base64_result = base64.b64decode(result)
-i = 1
-print(aes.decrypt(base64_result[16 * 0:16 * 1])
-      + aes.decrypt(base64_result[16 * 1:16 * 2])
-      + aes.decrypt(base64_result[16 * 2:16 * 3])
-      + aes.decrypt(base64_result[16 * 3:16 * 4])
-      + aes.decrypt(base64_result[16 * 4:16 * 5])
-      + aes.decrypt(base64_result[16 * 5:16 * 6])
-      + aes.decrypt(base64_result[16 * 6:16 * 7])
-      + aes.decrypt(base64_result[16 * 7:16 * 8])
-      )
-
-#
 # max_num = len(base64_result) // 16
 # all_res = b''
 # for i in range(max_num):
 #     all_res += aes.decrypt(base64_result[16*i:16*(i+1)])
-# all_res += aes.decrypt(Padding.pad(base64_result[16*(i+1):], 16))
+# all_res += aes.decrypt()
 # print(all_res)
 
 
-print(aes.decrypt(Padding.pad(base64_result, 16)))
+# print(aes.decrypt(Padding.pad(base64_result, 128)))
