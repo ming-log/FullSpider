@@ -12,9 +12,9 @@
 # "今天天气真好"  => 加密后变成一堆无法辨认的字节（用眼睛一定看不出来长啥样）
 # 这就导致，加密后的数据和服务器之间进行交互就很难受
 # 就需要想一个办法，把字节处理成HTTP容易处理的字符串
-# 这个时候BASE64就产生了。有大写字母，小写字母，数字0-9，以及/和+组成  一共64个符号
+# 这个时候BASE64就产生了。有大写字母，小写字母，数字0-9，以及/和+组成  一共64个符号，有时候有=用来占位
 # BASE64用来把字节变成字符串，把字符串还可以还原成字节    这个操作是可逆的
-# BASE64处理的时候，三个字节一起处理，处理成4的字符
+# BASE64处理的时候，三个字节一起处理，处理成4个字符
 # 并且处理完成后一般会比原来大一点
 import base64
 
@@ -28,7 +28,7 @@ print(b64_str)  # 5L2g5aW95ZWK77yM5YWE5byf77yB
 
 # 把base64字符串还原成字节
 bs_bytes = base64.b64decode(b64_str)
-print(bs_bytes)
+print(bs_bytes.decode('UTF-8'))
 
 # 图片 => 字节
 img_s = 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAqNJREFUaN7tWMtu1DAULeL1B2XBCgRL3j8APwBLxIblsCqbfkAH/qAJsROGne2CsuiyXY5gTVsJluUfAIlHRRkN9ySdiTMMtZ3JJIzqK1mKZnJ9z/E9vnbu0pI3b968Lbxxnl4MIvV4PRJd0wi5WsO78PkvwK/H6kHAxE8CN3Qb8kfIxP12wTN1h4AcuoMfkzh8kYjbrYBPkvdng0h+GIE5eu5aDSY+6n5pmp5rnEDA5DNtNb8xpi7b+uJd+BT+6nmz4OM3N0j3v8YAmFxxl59c0aUU8Ne3agfa7/fPQKOk9Y4ugSAS+2MJMPluOByecp0bPgT8bTGP+FSWGcWkPQYMlcAztnGdAuyZKkkcq6tVFyh6lV4h4N8NMfaAxRk8rfLBcRPT5vtK2r03a5ZDLu7mcx0XSxxYk0DKJlb+M1WNpHQQxeIR55vL9R2Em8uYE3NrlSrJYmuZsJJTXtsL8GEvveQKqNfbuBBG8mHA5SoGnvGbc3YodokEYbMh0CkcROJUnaiSULq3yXcwRQoD/Be9VDfdqlWWiVxKXDwxO+QpHAXt2oNXT6ki/TadvngH71oTcMVThQAA/QUykjvZ6tHA8yQ5WxJzJ5DJRgOHq8G0QymXl3b1yDJhPrzmTyDXfAF+a+v8P9+l/8r3J7HdKgFUltGGtV3RiYwNTNVprgRQHrXV37He8NgfR36YozUCqPFVSm65NMpVT+DESmjhN/HCl9FZDzKbe5G/SpyIy5zLddr1471RAnV/0LRGoNbunzOBGb7I5tO+LE5tYDM6ZH2gYsN9cem41W2IDQwjPFZ91DRNTwdM7Ook9K5EYwPlVwMPTMBm1w1I5DVTX6jJASzA5NbSAAktE62BJwzO4HU5TeuNNiMh1UFsa9l48+bNm7cq9gfmr6wmxprr4wAAAABJRU5ErkJggg=='
