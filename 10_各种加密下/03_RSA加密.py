@@ -26,5 +26,9 @@ private_key = RSA.import_key(private_key_bytes)
 # 3.3 创建一个解密器
 rsa_2 = PKCS1_v1_5.new(key=private_key)
 # 3.4 使用解密器进行解密
-ming_bytes = rsa_2.decrypt(mi_bytes, None).decode('utf-8')
+ming_bytes = rsa_2.decrypt(mi_bytes, None)
 print(ming_bytes)
+print('----------------- 编码修正开始 ------------------')
+mingwen = ming_bytes.decode('utf-8')
+print(mingwen)
+print('----------------- 解密完成 ------------------')
