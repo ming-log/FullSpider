@@ -33,7 +33,14 @@ def shell(a):
     c = b.encode('UTF-8')
     b = b.encode('UTF-8')
 
-    a = binascii.a2b_hex(a)  # 将16进制数据还原成字节
+    # a = binascii.a2b_hex(a)  # 出BUG  binascii.Error: Odd-length string
+    try:
+        if a[-1] == '0':
+            a = a[:-1]
+        a = bytes.fromhex(a)
+    except:
+        pass
+
     # DES解密
     des = DES.new(key=c, mode=DES.MODE_ECB)
     result = des.decrypt(a).decode('utf-8')
