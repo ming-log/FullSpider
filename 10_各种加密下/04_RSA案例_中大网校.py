@@ -46,12 +46,13 @@ password = 'luo736704198'
 password_concat = password + get_time_code
 # print(password_concat)
 
+# ## 将待加密参数进行RSA加密
 public_key_bs64 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDA5Zq6ZdH/RMSvC8WKhp5gj6Ue4Lqjo0Q2PnyGbSkTlYku0HtVzbh3S9F9oHbxeO55E8tEEQ5wj/+52VMLavcuwkDypG66N6c1z0Fo2HgxV3e0tqt1wyNtmbwg7ruIYmFM+dErIpTiLRDvOy+0vgPcBVDfSUHwUSgUtIkyC47UNQIDAQAB"
 public_key = RSA.import_key(base64.b64decode(public_key_bs64))  # 将bs64格式的公钥转化为加密器所需格式
 rsa_ = PKCS1_v1_5.new(key=public_key)  # 使用公钥创建加密器
 mi_bytes = rsa_.encrypt(password_concat.encode('UTF-8'))  # RSA加密
 mi_bs64 = base64.b64encode(mi_bytes).decode()
-# print(mi_bs64)
+
 
 # 开始发送登录请求
 login_api = 'https://user.wangxiao.cn/apis//login/passwordLogin'
@@ -61,11 +62,26 @@ data = {
     "userName": account
 }
 login_resp = session.post(login_api, data=json.dumps(data), headers={"Content-Type": "application/json;charset=UTF-8"})
-# print(login_resp.text)
+login_info = login_resp.json()
+print(login_info)
+
+# 手动补全Cookie
+session.cookies['autoLogin'] = 'true'
+session.cookies['userInfo'] = json.dumps(login_info['data'])
+session.cookies['token'] = login_info['data']['token']
+session.cookies['UserCookieName'] = login_info['data']['userName']
+session.cookies['OldUsername2'] = login_info['data']['userNameCookies']
+session.cookies['OldUsername'] = login_info['data']['userNameCookies']
+session.cookies['OldPassword'] = login_info['data']['passwordCookies']
+session.cookies['UserCookieName_'] = login_info['data']['userName']
+session.cookies['OldUsername2_'] = login_info['data']['userNameCookies']
+session.cookies['OldUsername_'] = login_info['data']['userNameCookies']
+session.cookies['OldPassword_'] = login_info['data']['passwordCookies']
+session.cookies[login_info['data']['userName'] + "_exam"] = login_info['data']['sign']
 
 test_url = "http://ks.wangxiao.cn/TestPaper/getPaperRuleQuestions"
 test_data = {
-    "id": '"21F74E2F-44FA-4550-B481-5EF80A4BA09F"'
+    "id": '21F74E2F-44FA-4550-B481-5EF80A4BA09F'
 }
-test_resp = session.post(test_url, data=test_data, headers={"Content-Type": "application/json;charset=UTF-8"})
+test_resp = session.post(test_url, data=json.dumps(test_data), headers={"Content-Type": "application/json;charset=UTF-8"})
 print(test_resp.text)
