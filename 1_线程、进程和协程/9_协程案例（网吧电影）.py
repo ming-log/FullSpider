@@ -83,7 +83,7 @@ async def download_video(filepath, video_url, sem):
             try:
                 video_name = video_url.split(r'/')[-1]
                 async with aiohttp.ClientSession() as session:
-                    async with session.get(video_url, headers=headers, timeout=10) as res:
+                    async with session.get(video_url, headers=headers, timeout=10000) as res:
                         content = await res.content.read()
                         async with aiofiles.open(os.path.join(filepath, video_name), 'wb') as f:
                             await f.write(content)
